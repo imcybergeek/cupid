@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "75644322425",
+    "project_id": "cupidknot-3ccca",
+    "storage_bucket": "cupidknot-3ccca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75644322425:android:ca66aca8514fddb0d0caa8",
+        "android_client_info": {
+          "package_name": "com.example.cupid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75644322425-e0ob5gd0cat4olgpuf1luclp4k9ikf6s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cupid",
+            "certificate_hash": "35f131c6a1ccbbde8f4dcac9c770bd9dbba90eb7"
+          }
+        },
+        {
+          "client_id": "75644322425-3tj39hln2sgua3i3cjbea7jn4eoh24oi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYl3nD49wI849-h-x2dpb8Tv-ixZYsoF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75644322425-3tj39hln2sgua3i3cjbea7jn4eoh24oi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
