@@ -1,6 +1,4 @@
-import 'package:cupid/auth_controller.dart';
 import 'package:cupid/firebase_controller.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'registration_name.dart';
@@ -26,7 +24,7 @@ class SignUpLogin extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset('assets/couple.jpg'),
+                      // Image.asset('assets/couple.jpg'),
                       Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -74,51 +72,9 @@ class SignUpLogin extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                //   final dio = Dio();
-                                //   var hi = await dio.post(
-                                //     "http://flutter-intern.cupidknot.com/api/",
-                                //     data: {
-                                //       'full_name': 'Practical Test',
-                                //       'email': 'test@testing.com'
-                                //     },
-                                //     options: Options(
-                                //         contentType: Headers.formUrlEncodedContentType),
-                                //   );
-                              },
-                              child: Text("Create")),
-                          ElevatedButton(
-                              onPressed: () {
-                                final FirebaseController firebaseController =
-                                    Get.put(FirebaseController());
-
-                                firebaseController.edit();
-                              },
-                              child: Text("Edit")),
-                          ElevatedButton(
-                              onPressed: () {
-                                final FirebaseController firebaseController =
-                                    Get.put(FirebaseController());
-
-                                firebaseController.delete("XD");
-                              },
-                              child: Text("Delete")),
-                          ElevatedButton(
-                              onPressed: () {
-                                final FirebaseController firebaseController =
-                                    Get.put(FirebaseController());
-                                print(firebaseController.contacts.length);
-                              },
-                              child: Text("Read")),
-                        ],
+                      SizedBox(
+                        height: 48,
                       ),
-                      // SizedBox(
-                      //   height: 48,
-                      // ),
                     ],
                   )),
             ),

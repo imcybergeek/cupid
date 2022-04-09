@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cupid/home_contact_form.dart';
 import 'package:cupid/home_contacts_list.dart';
 import 'package:cupid/home_profile.dart';
@@ -59,9 +61,11 @@ class _HomeState extends State<Home> {
 
 class CustomFormField extends StatelessWidget {
   String? label;
+  TextEditingController? controller;
   CustomFormField({
     Key? key,
     this.label,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -69,15 +73,16 @@ class CustomFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25),
       child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey),
-        ),
-        border: const OutlineInputBorder(),
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
-        labelText: '${label}',
-      )),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
+            border: const OutlineInputBorder(),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 20.0),
+            labelText: '${label}',
+          )),
     );
   }
 }

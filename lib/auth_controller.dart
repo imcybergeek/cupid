@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid/home.dart';
+import 'package:cupid/home_contacts_list.dart';
+import 'package:cupid/shared_preferences.dart';
 import 'package:cupid/signup_login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -34,8 +37,21 @@ class AuthController extends GetxController {
 
   void register() async {
     try {
-      await auth.createUserWithEmailAndPassword(
-          email: email!, password: password!);
+      await auth
+          .createUserWithEmailAndPassword(email: email!, password: password!)
+          .then((value) {
+        firebaseController.setUid(value.user!.uid);
+        FirebaseFirestore.instance
+            .collection('UserData')
+            .doc(value.user!.uid)
+            .set({
+          "name": name,
+          "mobile": mobile,
+          "gender": gender,
+          "dob": dob,
+        });
+        UserPreferences.setUid(value.user!.uid);
+      });
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Account Creation Failed", e.message.toString(),
           snackPosition: SnackPosition.BOTTOM);
@@ -44,7 +60,12 @@ class AuthController extends GetxController {
 
   void login(String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      await auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        firebaseController.setUid(value.user!.uid);
+        UserPreferences.setUid(value.user!.uid);
+      });
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Login Failed", e.message.toString(),
           snackPosition: SnackPosition.BOTTOM);

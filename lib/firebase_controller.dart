@@ -1,14 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cupid/contact_form_model.dart';
+import 'package:cupid/model.dart';
+import 'package:cupid/shared_preferences.dart';
 import 'package:get/get.dart';
 
 class FirebaseController extends GetxController {
   var isLoading = true;
-  var contacts = <ContactFormModel>[];
+  var contacts = <ContactsModel>[];
+  var profile = <ProfileModel>[];
+  String? uid = UserPreferences.getUid();
 
   Future<void> addTransaction(
       String id, String name, String email, String mobile) async {
     await FirebaseFirestore.instance
+        .collection('UserData')
+        .doc(uid)
         .collection('contacts')
         .doc(id.isNotEmpty ? id : '')
         .set(
@@ -23,15 +28,33 @@ class FirebaseController extends GetxController {
     );
   }
 
+  Future<void> updateProfile(
+      String name, String mobile, String gender, String dob) async {
+    await FirebaseFirestore.instance.collection('UserData').doc(uid).set(
+      {
+        'name': name,
+        'mobile': mobile,
+        'gender': gender,
+        'dob': dob,
+      },
+      SetOptions(merge: true),
+    ).then(
+      (value) => Get.back(),
+    );
+  }
+
   Future<void> getData() async {
     try {
-      QuerySnapshot _taskSnap =
-          await FirebaseFirestore.instance.collection('contacts').get();
+      QuerySnapshot _taskSnap = await FirebaseFirestore.instance
+          .collection('UserData')
+          .doc(uid)
+          .collection('contacts')
+          .get();
 
       contacts.clear();
       for (var item in _taskSnap.docs) {
         contacts.add(
-          ContactFormModel(
+          ContactsModel(
             item.id,
             item['name'],
             item['email'],
@@ -40,6 +63,30 @@ class FirebaseController extends GetxController {
         );
       }
       contacts = contacts.toList();
+      isLoading = false;
+      update();
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> getProfileData() async {
+    try {
+      QuerySnapshot _taskSnap =
+          await FirebaseFirestore.instance.collection('UserData').get();
+
+      profile.clear();
+      for (var item in _taskSnap.docs) {
+        profile.add(
+          ProfileModel(
+            item['name'],
+            item['mobile'],
+            item['gender'],
+            item['dob'],
+          ),
+        );
+      }
+      profile = profile.toList();
       isLoading = false;
       update();
     } catch (e) {
@@ -63,6 +110,19 @@ class FirebaseController extends GetxController {
   }
 
   delete(String id) {
-    FirebaseFirestore.instance.collection('contacts').doc(id).delete();
+    FirebaseFirestore.instance
+        .collection('UserData')
+        .doc(uid)
+        .collection('contacts')
+        .doc(id)
+        .delete();
+  }
+
+  setUid(String _uid) {
+    uid = _uid;
+  }
+
+  display() {
+    print(uid);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cupid/auth_controller.dart';
+import 'package:cupid/shared_preferences.dart';
 import 'package:cupid/signup_login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) => Get.put(AuthController()));
+  await UserPreferences.init();
   runApp(CupidKnot());
 }
 
