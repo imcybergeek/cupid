@@ -21,7 +21,7 @@ class CupidKnot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemUiOverlayStyle myOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.white);
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: myOverlayStyle,
         child: GetMaterialApp(
@@ -32,5 +32,37 @@ class CupidKnot extends StatelessWidget {
           ),
           debugShowCheckedModeBanner: false,
         ));
+  }
+}
+
+class BlueButton extends StatelessWidget {
+  String text;
+  VoidCallback onTap;
+  BlueButton({
+    Key? key,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18.0),
+      ))),
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+      onPressed: () {
+        WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
+        onTap();
+      },
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cupid/main.dart';
 import 'package:cupid/view_models/firebase_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -63,19 +64,16 @@ class ContactForm extends StatelessWidget {
         SizedBox(
           height: 25,
         ),
-        ElevatedButton(
-            onPressed: () async {
-              WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
-              if (await FirebaseController.instance.createContact(
-                  _nameController.text, _emailController.text, mobile)) {
-                _nameController.text = _mobileController.text =
-                    _emailController.text = mobile = "";
-              }
-            },
-            child: Text(
-              "Submit",
-              style: TextStyle(fontSize: 18),
-            )),
+        BlueButton(
+          text: "Submit",
+          onTap: () async {
+            if (await FirebaseController.instance.createContact(
+                _nameController.text, _emailController.text, mobile)) {
+              _nameController.text =
+                  _mobileController.text = _emailController.text = mobile = "";
+            }
+          },
+        ),
       ],
     );
   }

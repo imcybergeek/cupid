@@ -1,3 +1,4 @@
+import 'package:cupid/main.dart';
 import 'package:cupid/view_models/auth_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -45,15 +46,12 @@ class Login extends StatelessWidget {
               SizedBox(
                 height: 25,
               ),
-              ElevatedButton(
-                  onPressed: () {
+              BlueButton(
+                  onTap: () {
                     AuthController.instance.fromLoginPageToHomePage(
                         _emailController.text, _passwordController.text);
                   },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(fontSize: 18),
-                  ))
+                  text: "Login")
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:cupid/main.dart';
 import 'package:cupid/view_models/auth_controller.dart';
 import 'package:cupid/view_models/firebase_controller.dart';
 import 'package:cupid/views/home/home.dart';
@@ -91,42 +92,18 @@ class _ProfileState extends State<Profile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Text(
-                              "Log Out",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                          onPressed: () {
+                        BlueButton(
+                          text: "Logout",
+                          onTap: () {
                             AuthController.instance.signOut();
                           },
                         ),
                         SizedBox(
                           width: 25,
                         ),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                          ))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Text(
-                              edit ? "Save" : "Edit",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                          onPressed: () async {
+                        BlueButton(
+                          text: edit ? "Save" : "Edit",
+                          onTap: () async {
                             if (edit) {
                               await AuthController.instance.updateUserData(
                                   _nameController.text,

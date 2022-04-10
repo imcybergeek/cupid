@@ -1,3 +1,4 @@
+import 'package:cupid/main.dart';
 import 'package:cupid/view_models/auth_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -45,16 +46,13 @@ class Password extends StatelessWidget {
               SizedBox(
                 height: 25,
               ),
-              ElevatedButton(
-                  onPressed: () {
+              BlueButton(
+                  onTap: () {
                     AuthController.instance.fromPasswordPageToHomePage(
                         _passwordController.text,
                         _confirmPasswordController.text);
                   },
-                  child: Text(
-                    "Complete",
-                    style: TextStyle(fontSize: 18),
-                  ))
+                  text: "Complete")
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:cupid/main.dart';
 import 'package:cupid/view_models/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -90,16 +91,13 @@ class _GenderAndDobState extends State<GenderAndDob> {
                 SizedBox(
                   height: 25,
                 ),
-                ElevatedButton(
-                    onPressed: () {
+                BlueButton(
+                    onTap: () {
                       AuthController.instance
                           .fromGenderAndDobPageToEmailAndMobilePage(
                               gender, dateTime);
                     },
-                    child: Text(
-                      "Next",
-                      style: TextStyle(fontSize: 18),
-                    ))
+                    text: "Next")
               ],
             ),
           ),

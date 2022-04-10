@@ -1,3 +1,4 @@
+import 'package:cupid/main.dart';
 import 'package:cupid/view_models/firebase_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,65 +18,38 @@ class SignUpLogin extends StatelessWidget {
         builder: (firebaseController) {
           firebaseController.getContacts();
           return Scaffold(
-            body: SafeArea(
-              child: Container(
-                  alignment: Alignment.center,
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset('assets/couple.jpg'),
-                      Spacer(),
-                      Row(
+            body: Container(
+                alignment: Alignment.center,
+                color: Colors.white,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    FittedBox(
+                        fit: BoxFit.cover,
+                        child: Image.asset('assets/couple.jpg')),
+                    Positioned(
+                      bottom: 100,
+                      left: 0,
+                      right: 0,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                "Sign Up",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                            onPressed: () {
-                              Get.to(() => Name());
-                            },
+                          BlueButton(
+                            text: "Sign Up",
+                            onTap: () => Get.to(() => Name()),
                           ),
                           SizedBox(
                             width: 50,
                           ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            ))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                "Login",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                            onPressed: () {
-                              Get.to(() => Login());
-                            },
+                          BlueButton(
+                            text: "Login",
+                            onTap: () => Get.to(() => Login()),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 48,
-                      ),
-                    ],
-                  )),
-            ),
+                    ),
+                  ],
+                )),
           );
         });
   }

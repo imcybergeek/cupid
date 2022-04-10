@@ -16,35 +16,42 @@ class ContactsList extends StatelessWidget {
         initState: (_) {},
         builder: (firebaseController) {
           firebaseController.getContacts();
-          return Container(
-            color: Colors.white,
-            height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Text(
-                    "Contacts",
+          return firebaseController.contacts.length == 0
+              ? Center(
+                  child: Text(
+                    "No contacts to display!",
                     style: TextStyle(fontSize: 25),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemCount: firebaseController.contacts.length,
-                    itemBuilder: (context, index) => ContactCard(
-                      id: firebaseController.contacts[index].id,
-                      name: firebaseController.contacts[index].name,
-                      email: firebaseController.contacts[index].email,
-                      mobile: firebaseController.contacts[index].mobile,
+                )
+              : Container(
+                  color: Colors.white,
+                  height: MediaQuery.of(context).size.height,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Text(
+                          "Contacts",
+                          style: TextStyle(fontSize: 25),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          itemCount: firebaseController.contacts.length,
+                          itemBuilder: (context, index) => ContactCard(
+                            id: firebaseController.contacts[index].id,
+                            name: firebaseController.contacts[index].name,
+                            email: firebaseController.contacts[index].email,
+                            mobile: firebaseController.contacts[index].mobile,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          );
+                );
         });
   }
 }

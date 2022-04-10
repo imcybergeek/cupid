@@ -1,3 +1,4 @@
+import 'package:cupid/main.dart';
 import 'package:cupid/view_models/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -43,16 +44,13 @@ class EmailAndMobile extends StatelessWidget {
                 SizedBox(
                   height: 25,
                 ),
-                ElevatedButton(
-                    onPressed: () {
+                BlueButton(
+                    onTap: () {
                       AuthController.instance
                           .fromEmailAndMobilePageToPasswordPage(
                               _emailController.text, mobile);
                     },
-                    child: Text(
-                      "Next",
-                      style: TextStyle(fontSize: 18),
-                    ))
+                    text: "Next")
               ],
             ),
           ),

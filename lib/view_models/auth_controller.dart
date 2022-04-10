@@ -301,7 +301,10 @@ class AuthController extends GetxController {
 // Sign In
 
   fromLoginPageToHomePage(email, password) async {
-    if (await loginCupidknot(email, password)) {
+    if (!AuthController.instance.validateEmail(email)) {
+    } else if (password.isEmpty) {
+      Get.snackbar("Password Missing!", "Enter the password!");
+    } else if (await loginCupidknot(email, password)) {
       login(email, password);
     }
   }
