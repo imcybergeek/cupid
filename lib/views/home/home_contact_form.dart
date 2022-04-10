@@ -1,9 +1,5 @@
-import 'dart:io';
-
-import 'package:cupid/auth_controller.dart';
-import 'package:cupid/firebase_controller.dart';
+import 'package:cupid/view_models/firebase_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 PhoneNumber number = PhoneNumber(isoCode: 'IN');
@@ -68,18 +64,12 @@ class ContactForm extends StatelessWidget {
           height: 25,
         ),
         ElevatedButton(
-            onPressed: () {
-              final FirebaseController firebaseController =
-                  Get.put(FirebaseController());
-              firebaseController.create(
-                  _nameController.text, _emailController.text, mobile);
-              _nameController.text =
-                  _mobileController.text = _emailController.text = "";
-
-              FocusScopeNode currentFocus = FocusScope.of(context);
-
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
+            onPressed: () async {
+              WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
+              if (await FirebaseController.instance.createContact(
+                  _nameController.text, _emailController.text, mobile)) {
+                _nameController.text = _mobileController.text =
+                    _emailController.text = mobile = "";
               }
             },
             child: Text(

@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final errorModel = errorModelFromJson(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 ErrorModel errorModelFromJson(String str) =>

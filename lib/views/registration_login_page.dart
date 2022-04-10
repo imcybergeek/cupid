@@ -1,8 +1,8 @@
-import 'package:cupid/firebase_controller.dart';
+import 'package:cupid/view_models/firebase_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'registration_name.dart';
-import 'login_page.dart';
+import 'registration/registration_name.dart';
+import 'login/login_page.dart';
 
 class SignUpLogin extends StatelessWidget {
   const SignUpLogin({
@@ -15,7 +15,7 @@ class SignUpLogin extends StatelessWidget {
         init: FirebaseController(),
         initState: (_) {},
         builder: (firebaseController) {
-          firebaseController.getData();
+          firebaseController.getContacts();
           return Scaffold(
             body: SafeArea(
               child: Container(
@@ -44,8 +44,6 @@ class SignUpLogin extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              // AuthController.instance
-                              //     .register("jatinjxd@gmail.com", "password");
                               Get.to(() => Name());
                             },
                           ),

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'firebase_controller.dart';
+import '../../view_models/firebase_controller.dart';
 
 final FirebaseController firebaseController = Get.put(FirebaseController());
 
@@ -15,7 +15,7 @@ class ContactsList extends StatelessWidget {
         init: FirebaseController(),
         initState: (_) {},
         builder: (firebaseController) {
-          firebaseController.getData();
+          firebaseController.getContacts();
           return Container(
             color: Colors.white,
             height: MediaQuery.of(context).size.height,

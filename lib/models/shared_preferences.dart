@@ -1,5 +1,3 @@
-import 'package:cupid/auth_controller.dart';
-import 'package:cupid/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {

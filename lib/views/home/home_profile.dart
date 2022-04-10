@@ -1,7 +1,7 @@
-import 'package:cupid/auth_controller.dart';
-import 'package:cupid/firebase_controller.dart';
-import 'package:cupid/home.dart';
-import 'package:cupid/shared_preferences.dart';
+import 'package:cupid/view_models/auth_controller.dart';
+import 'package:cupid/view_models/firebase_controller.dart';
+import 'package:cupid/views/home/home.dart';
+import 'package:cupid/models/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

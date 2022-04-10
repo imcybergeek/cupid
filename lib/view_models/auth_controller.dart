@@ -1,16 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cupid/error_model.dart';
-import 'package:cupid/home.dart';
-import 'package:cupid/home_contacts_list.dart';
-import 'package:cupid/user_model.dart';
-import 'package:cupid/registration_email_mobile.dart';
-import 'package:cupid/registration_gender_dob.dart';
-import 'package:cupid/registration_password.dart';
-import 'package:cupid/shared_preferences.dart';
-import 'package:cupid/signup_login_page.dart';
+import 'package:cupid/models/error_model.dart';
+import 'package:cupid/views/home/home.dart';
+import 'package:cupid/views/home/home_contacts_list.dart';
+import 'package:cupid/models/user_model.dart';
+import 'package:cupid/views/registration/registration_email_mobile.dart';
+import 'package:cupid/views/registration/registration_gender_dob.dart';
+import 'package:cupid/views/registration/registration_password.dart';
+import 'package:cupid/models/shared_preferences.dart';
+import 'package:cupid/views/registration_login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -113,11 +112,6 @@ class AuthController extends GetxController {
     password = _password;
   }
 
-  void contactAdded() {
-    Get.snackbar("Contact Added!", "Contact was added successfully!",
-        snackPosition: SnackPosition.TOP);
-  }
-
 // CupidKnot
 
   registerCupidKnot() async {
@@ -144,6 +138,36 @@ class AuthController extends GetxController {
       if (errorModel.data.email[0] == "The email has already been taken.") {
         Get.snackbar("Account Exists!", "This email has already been taken!");
       }
+      return false;
+    } else {
+      UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
+      UserPreferences.setUserData([
+        userModel.data.userDetails.name,
+        userModel.data.userDetails.email,
+        userModel.data.userDetails.mobileNo,
+        userModel.data.userDetails.gender,
+        DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
+        userModel.data.token!
+      ]);
+      return true;
+    }
+  }
+
+  loginCupidknot(email, password) async {
+    var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    var data = {
+      'email': email,
+      'password': password,
+    };
+
+    var url = Uri.parse('http://flutter-intern.cupidknot.com/api/login');
+    var res = await http.post(url, headers: headers, body: data);
+    print(res.body);
+    if (res.statusCode != 200) {
+      print('http.post error: statusCode= ${res.statusCode}');
       return false;
     } else {
       UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
@@ -195,36 +219,6 @@ class AuthController extends GetxController {
     }
   }
 
-  loginCupidknot(email, password) async {
-    var headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    };
-
-    var data = {
-      'email': email,
-      'password': password,
-    };
-
-    var url = Uri.parse('http://flutter-intern.cupidknot.com/api/login');
-    var res = await http.post(url, headers: headers, body: data);
-    print(res.body);
-    if (res.statusCode != 200) {
-      print('http.post error: statusCode= ${res.statusCode}');
-      return false;
-    } else {
-      UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
-      UserPreferences.setUserData([
-        userModel.data.userDetails.name,
-        userModel.data.userDetails.email,
-        userModel.data.userDetails.mobileNo,
-        userModel.data.userDetails.gender,
-        DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
-        userModel.data.token!
-      ]);
-      return true;
-    }
-  }
-
 // Sign Up
 
   fromNamePageToGenderAndDobPage(String first, String last) {
@@ -251,18 +245,25 @@ class AuthController extends GetxController {
   }
 
   fromEmailAndMobilePageToPasswordPage(String email, String? mobile) {
-    if (validateEmailAndMobile(email, mobile)) {
+    if (validateEmail(email) && validateMobile(mobile)) {
       saveEmailAndMobile(email, mobile);
       Get.to(() => Password());
     }
   }
 
-  validateEmailAndMobile(String email, String? mobile) {
+  validateEmail(String email) {
     if (email.isEmpty) {
       Get.snackbar("Email missing!", "Enter your email address!");
     } else if (!email.contains(EmailValidator.regex)) {
       Get.snackbar("Invalid Email!", "Please enter a valid email!");
-    } else if (mobile == null || mobile.isEmpty) {
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  validateMobile(String? mobile) {
+    if (mobile == null || mobile.isEmpty) {
       Get.snackbar("Mobile Number missing!", "Enter your mobile number!");
     } else if (!mobile.contains(MobileValidator.regex)) {
       Get.snackbar(
@@ -297,11 +298,15 @@ class AuthController extends GetxController {
     return false;
   }
 
+// Sign In
+
   fromLoginPageToHomePage(email, password) async {
     if (await loginCupidknot(email, password)) {
       login(email, password);
     }
   }
+
+// Update Profile
 
   updateUserData(String name, mobile, gender, dob, token) async {
     if (await updateCupidknot(name, mobile, gender, dob, token)) {

@@ -1,8 +1,5 @@
-import 'package:cupid/auth_controller.dart';
-import 'package:cupid/registration_gender_dob.dart';
-import 'package:cupid/users/models/users_model.dart';
+import 'package:cupid/view_models/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class Name extends StatelessWidget {
   const Name({Key? key}) : super(key: key);

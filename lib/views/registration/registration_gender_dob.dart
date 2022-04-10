@@ -1,9 +1,7 @@
-import 'package:cupid/auth_controller.dart';
-import 'package:cupid/registration_email_mobile.dart';
+import 'package:cupid/view_models/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 bool gender = true;
 String dateTime = "1990-01-01";

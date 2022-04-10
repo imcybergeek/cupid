@@ -1,15 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cupid/auth_controller.dart';
-import 'package:cupid/model.dart';
-import 'package:cupid/shared_preferences.dart';
+import 'package:cupid/view_models/auth_controller.dart';
+import 'package:cupid/models/model.dart';
+import 'package:cupid/models/shared_preferences.dart';
 import 'package:get/get.dart';
 
 class FirebaseController extends GetxController {
+  static FirebaseController instance = Get.find();
   var isLoading = true;
   var contacts = <ContactsModel>[];
   var profile = <ProfileModel>[];
   String? uid = UserPreferences.getUid();
   List<String>? userData = UserPreferences.getUserData();
+
+  createContact(String name, String email, String? mobile) async {
+    if (name.isEmpty) {
+      Get.snackbar("Name Missing!", "Enter the name!");
+    } else if (AuthController.instance.validateMobile(mobile) &&
+        AuthController.instance.validateEmail(email)) {
+      await addContact(DateTime.now().millisecondsSinceEpoch.toString(), name,
+              email, mobile!)
+          .then((value) => Get.snackbar(
+              "Contact Added!", "Contact was added successfully!",
+              snackPosition: SnackPosition.TOP));
+      return true;
+    }
+    return false;
+  }
 
   Future<void> addContact(
       String id, String name, String email, String mobile) async {
@@ -30,25 +46,7 @@ class FirebaseController extends GetxController {
     );
   }
 
-  Future<void> updateProfile(
-      String name, String mobile, String gender, String dob) async {
-    await FirebaseFirestore.instance
-        .collection('UserData')
-        .doc(userData![1])
-        .set(
-      {
-        'name': name,
-        'mobile': mobile,
-        'gender': gender,
-        'dob': dob,
-      },
-      SetOptions(merge: true),
-    ).then(
-      (value) => Get.back(),
-    );
-  }
-
-  Future<void> getData() async {
+  Future<void> getContacts() async {
     try {
       QuerySnapshot _taskSnap = await FirebaseFirestore.instance
           .collection('UserData')
@@ -75,6 +73,19 @@ class FirebaseController extends GetxController {
     }
   }
 
+  deleteContact(String id) {
+    FirebaseFirestore.instance
+        .collection('UserData')
+        .doc(userData![1])
+        .collection('contacts')
+        .doc(id)
+        .delete();
+  }
+
+  setUid(String _uid) {
+    uid = _uid;
+  }
+
   Future<void> getProfileData() async {
     try {
       DocumentSnapshot profileData = await FirebaseFirestore.instance
@@ -99,24 +110,21 @@ class FirebaseController extends GetxController {
     }
   }
 
-  create(String _name, String _email, String? _mobile) {
-    final FirebaseController firebaseController = Get.find();
-    firebaseController
-        .addContact(DateTime.now().millisecondsSinceEpoch.toString(), _name,
-            _email, _mobile!)
-        .then((value) => AuthController.instance.contactAdded());
-  }
-
-  deleteContact(String id) {
-    FirebaseFirestore.instance
+  Future<void> updateProfile(
+      String name, String mobile, String gender, String dob) async {
+    await FirebaseFirestore.instance
         .collection('UserData')
         .doc(userData![1])
-        .collection('contacts')
-        .doc(id)
-        .delete();
-  }
-
-  setUid(String _uid) {
-    uid = _uid;
+        .set(
+      {
+        'name': name,
+        'mobile': mobile,
+        'gender': gender,
+        'dob': dob,
+      },
+      SetOptions(merge: true),
+    ).then(
+      (value) => Get.back(),
+    );
   }
 }

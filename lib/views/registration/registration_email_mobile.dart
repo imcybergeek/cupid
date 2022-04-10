@@ -1,7 +1,5 @@
-import 'package:cupid/auth_controller.dart';
-import 'package:cupid/registration_password.dart';
+import 'package:cupid/view_models/auth_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class EmailAndMobile extends StatelessWidget {

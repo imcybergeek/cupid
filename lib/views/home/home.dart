@@ -1,6 +1,6 @@
-import 'package:cupid/home_contact_form.dart';
-import 'package:cupid/home_contacts_list.dart';
-import 'package:cupid/home_profile.dart';
+import 'package:cupid/views/home/home_contact_form.dart';
+import 'package:cupid/views/home/home_contacts_list.dart';
+import 'package:cupid/views/home/home_profile.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
