@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupid/error_model.dart';
 import 'package:cupid/home.dart';
 import 'package:cupid/home_contacts_list.dart';
+import 'package:cupid/user_model.dart';
 import 'package:cupid/registration_email_mobile.dart';
 import 'package:cupid/registration_gender_dob.dart';
 import 'package:cupid/registration_password.dart';
@@ -16,6 +20,13 @@ String? dob;
 String? email;
 String? mobile;
 String? password;
+
+String? nameCupidknot;
+String? genderCupidknot;
+String? dobCupidknot;
+String? emailCupidknot;
+String? mobileCupidknot;
+String? tokenCupidknot;
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -124,7 +135,26 @@ class AuthController extends GetxController {
 
     var url = Uri.parse('http://flutter-intern.cupidknot.com/api/register');
     var res = await http.post(url, headers: headers, body: data);
-    print(res.body);
+
+    if (res.statusCode != 200) {
+      print('http.post error: statusCode= ${res.statusCode}');
+      ErrorModel errorModel = ErrorModel.fromJson(jsonDecode(res.body));
+      if (errorModel.data.email[0] == "The email has already been taken.") {
+        Get.snackbar("Account Exists!", "This email has already been taken!");
+      }
+      return false;
+    } else {
+      UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
+      UserPreferences.setUserData([
+        userModel.data.userDetails.fullName,
+        userModel.data.userDetails.email,
+        userModel.data.userDetails.mobileNo,
+        userModel.data.userDetails.gender,
+        userModel.data.userDetails.dob.toString(),
+        userModel.data.token
+      ]);
+      return true;
+    }
   }
 
 // Sign Up
@@ -175,11 +205,13 @@ class AuthController extends GetxController {
     return false;
   }
 
-  fromPasswordPageToHomePage(String password, String passwordConfirmation) {
+  fromPasswordPageToHomePage(
+      String password, String passwordConfirmation) async {
     if (passwordMismatch(password, passwordConfirmation)) {
       savePassword(password);
-      register();
-      registerCupidKnot();
+      if (await registerCupidKnot()) {
+        register();
+      }
     }
   }
 

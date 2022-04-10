@@ -1,6 +1,7 @@
 import 'package:cupid/auth_controller.dart';
 import 'package:cupid/firebase_controller.dart';
 import 'package:cupid/home.dart';
+import 'package:cupid/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,6 +16,7 @@ class Profile extends StatelessWidget {
     var _mobileController = TextEditingController();
     var _genderController = TextEditingController();
     var _dobController = TextEditingController();
+    List<String>? userData = UserPreferences.getUserData();
     bool edit = false;
     final FirebaseController firebaseController = Get.put(FirebaseController());
     return GetBuilder<FirebaseController>(
