@@ -89,7 +89,7 @@ class ContactCard extends StatelessWidget {
             ),
             trailing: IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () => firebaseController.delete("$id"),
+              onPressed: () => firebaseController.deleteContact("$id"),
             ),
           ),
         ));

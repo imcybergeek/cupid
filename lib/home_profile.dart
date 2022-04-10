@@ -5,11 +5,16 @@ import 'package:cupid/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     var _nameController = TextEditingController();
@@ -64,19 +69,19 @@ class Profile extends StatelessWidget {
                             children: [
                               ProfileCard(
                                 type: "Name:",
-                                value: firebaseController.profile[0].name,
+                                value: userData![0],
                               ),
                               ProfileCard(
                                 type: "Mobile:",
-                                value: firebaseController.profile[0].mobile,
+                                value: userData[2],
                               ),
                               ProfileCard(
                                 type: "Gender:",
-                                value: firebaseController.profile[0].gender,
+                                value: userData[3],
                               ),
                               ProfileCard(
                                 type: "Date of Birth:",
-                                value: firebaseController.profile[0].dob,
+                                value: userData[4],
                               ),
                             ],
                           ),
@@ -123,23 +128,20 @@ class Profile extends StatelessWidget {
                           ),
                           onPressed: () async {
                             if (edit) {
-                              await firebaseController.updateProfile(
+                              await AuthController.instance.updateUserData(
                                   _nameController.text,
                                   _mobileController.text,
                                   _genderController.text,
-                                  _dobController.text);
-                              edit = !edit;
+                                  _dobController.text,
+                                  userData![5]);
+                              setState(() {});
                             } else {
-                              _nameController.text =
-                                  firebaseController.profile[0].name;
-                              _mobileController.text =
-                                  firebaseController.profile[0].mobile;
-                              _genderController.text =
-                                  firebaseController.profile[0].gender;
-                              _dobController.text =
-                                  firebaseController.profile[0].dob;
-                              edit = !edit;
+                              _nameController.text = userData![0];
+                              _mobileController.text = userData[2];
+                              _genderController.text = userData[3];
+                              _dobController.text = userData[4];
                             }
+                            edit = !edit;
                           },
                         ),
                       ],

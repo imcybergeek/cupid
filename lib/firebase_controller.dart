@@ -9,12 +9,13 @@ class FirebaseController extends GetxController {
   var contacts = <ContactsModel>[];
   var profile = <ProfileModel>[];
   String? uid = UserPreferences.getUid();
+  List<String>? userData = UserPreferences.getUserData();
 
-  Future<void> addTransaction(
+  Future<void> addContact(
       String id, String name, String email, String mobile) async {
     await FirebaseFirestore.instance
         .collection('UserData')
-        .doc(uid)
+        .doc(userData![1])
         .collection('contacts')
         .doc(id.isNotEmpty ? id : '')
         .set(
@@ -31,7 +32,10 @@ class FirebaseController extends GetxController {
 
   Future<void> updateProfile(
       String name, String mobile, String gender, String dob) async {
-    await FirebaseFirestore.instance.collection('UserData').doc(uid).set(
+    await FirebaseFirestore.instance
+        .collection('UserData')
+        .doc(userData![1])
+        .set(
       {
         'name': name,
         'mobile': mobile,
@@ -48,7 +52,7 @@ class FirebaseController extends GetxController {
     try {
       QuerySnapshot _taskSnap = await FirebaseFirestore.instance
           .collection('UserData')
-          .doc(uid)
+          .doc(userData![1])
           .collection('contacts')
           .get();
 
@@ -75,7 +79,7 @@ class FirebaseController extends GetxController {
     try {
       DocumentSnapshot profileData = await FirebaseFirestore.instance
           .collection('UserData')
-          .doc(uid)
+          .doc(userData![1])
           .get();
 
       profile.clear();
@@ -95,24 +99,18 @@ class FirebaseController extends GetxController {
     }
   }
 
-  create(String _name, String _email, String _mobile) {
+  create(String _name, String _email, String? _mobile) {
     final FirebaseController firebaseController = Get.find();
     firebaseController
-        .addTransaction(DateTime.now().millisecondsSinceEpoch.toString(), _name,
-            _email, _mobile)
+        .addContact(DateTime.now().millisecondsSinceEpoch.toString(), _name,
+            _email, _mobile!)
         .then((value) => AuthController.instance.contactAdded());
   }
 
-  edit() {
-    final FirebaseController firebaseController = Get.find();
-    firebaseController.addTransaction(
-        "1649453982241", "Jatin Joshi", "jatinjxd@gmail.com", "7906160705");
-  }
-
-  delete(String id) {
+  deleteContact(String id) {
     FirebaseFirestore.instance
         .collection('UserData')
-        .doc(uid)
+        .doc(userData![1])
         .collection('contacts')
         .doc(id)
         .delete();

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid/error_model.dart';
@@ -13,6 +14,7 @@ import 'package:cupid/signup_login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 String? name;
 String? gender;
@@ -56,7 +58,6 @@ class AuthController extends GetxController {
           .createUserWithEmailAndPassword(
               email: email!.trim(), password: password!.trim())
           .then((value) {
-        firebaseController.setUid(value.user!.uid);
         FirebaseFirestore.instance
             .collection('UserData')
             .doc(value.user!.uid)
@@ -66,6 +67,7 @@ class AuthController extends GetxController {
           "gender": gender,
           "dob": dob,
         });
+        firebaseController.setUid(value.user!.uid);
         UserPreferences.setUid(value.user!.uid);
       });
     } on FirebaseAuthException catch (e) {
@@ -135,7 +137,7 @@ class AuthController extends GetxController {
 
     var url = Uri.parse('http://flutter-intern.cupidknot.com/api/register');
     var res = await http.post(url, headers: headers, body: data);
-
+    print(res.body);
     if (res.statusCode != 200) {
       print('http.post error: statusCode= ${res.statusCode}');
       ErrorModel errorModel = ErrorModel.fromJson(jsonDecode(res.body));
@@ -146,12 +148,78 @@ class AuthController extends GetxController {
     } else {
       UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
       UserPreferences.setUserData([
-        userModel.data.userDetails.fullName,
+        userModel.data.userDetails.name,
         userModel.data.userDetails.email,
         userModel.data.userDetails.mobileNo,
         userModel.data.userDetails.gender,
-        userModel.data.userDetails.dob.toString(),
-        userModel.data.token
+        DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
+        userModel.data.token!
+      ]);
+      return true;
+    }
+  }
+
+  updateCupidknot(name, mobile, gender, dob, token) async {
+    var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      HttpHeaders.authorizationHeader: "Bearer $token"
+    };
+
+    var data = {
+      'full_name': name,
+      'mobile_no': mobile,
+      'gender': gender,
+      'dob': dob,
+    };
+
+    var url = Uri.parse(
+        'http://flutter-intern.cupidknot.com/api/updateProfileDetails');
+    var res = await http.post(url, headers: headers, body: data);
+    print(res.body);
+    if (res.statusCode != 200) {
+      print('http.post error: statusCode= ${res.statusCode}');
+      Get.snackbar(
+          "Profile Update Error!", "An error occured while updating profile!");
+      return false;
+    } else {
+      UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
+      UserPreferences.setUserData([
+        userModel.data.userDetails.name,
+        userModel.data.userDetails.email,
+        userModel.data.userDetails.mobileNo,
+        userModel.data.userDetails.gender,
+        DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
+        token
+      ]);
+      return true;
+    }
+  }
+
+  loginCupidknot(email, password) async {
+    var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    var data = {
+      'email': email,
+      'password': password,
+    };
+
+    var url = Uri.parse('http://flutter-intern.cupidknot.com/api/login');
+    var res = await http.post(url, headers: headers, body: data);
+    print(res.body);
+    if (res.statusCode != 200) {
+      print('http.post error: statusCode= ${res.statusCode}');
+      return false;
+    } else {
+      UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
+      UserPreferences.setUserData([
+        userModel.data.userDetails.name,
+        userModel.data.userDetails.email,
+        userModel.data.userDetails.mobileNo,
+        userModel.data.userDetails.gender,
+        DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
+        userModel.data.token!
       ]);
       return true;
     }
@@ -227,6 +295,20 @@ class AuthController extends GetxController {
       return true;
     }
     return false;
+  }
+
+  fromLoginPageToHomePage(email, password) async {
+    if (await loginCupidknot(email, password)) {
+      login(email, password);
+    }
+  }
+
+  updateUserData(String name, mobile, gender, dob, token) async {
+    if (await updateCupidknot(name, mobile, gender, dob, token)) {
+      firebaseController.updateProfile(name, mobile, gender, dob).then(
+          (value) => Get.snackbar(
+              "Updated Profile!", "Account profile was updated successfully!"));
+    }
   }
 }
 

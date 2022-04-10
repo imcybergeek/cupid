@@ -47,8 +47,8 @@ class Login extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    AuthController.instance
-                        .login(_emailController.text, _passwordController.text);
+                    AuthController.instance.fromLoginPageToHomePage(
+                        _emailController.text, _passwordController.text);
                   },
                   child: Text(
                     "Login",

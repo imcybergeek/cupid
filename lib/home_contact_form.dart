@@ -10,6 +10,7 @@ PhoneNumber number = PhoneNumber(isoCode: 'IN');
 var _nameController = TextEditingController();
 var _emailController = TextEditingController();
 var _mobileController = TextEditingController();
+String? mobile;
 
 class ContactForm extends StatelessWidget {
   const ContactForm({
@@ -46,7 +47,9 @@ class ContactForm extends StatelessWidget {
             textFieldController: _mobileController,
             initialValue: number,
             inputBorder: OutlineInputBorder(),
-            onInputChanged: (phone) {}),
+            onInputChanged: (phone) {
+              mobile = phone.toString();
+            }),
         SizedBox(
           height: 25,
         ),
@@ -68,8 +71,8 @@ class ContactForm extends StatelessWidget {
             onPressed: () {
               final FirebaseController firebaseController =
                   Get.put(FirebaseController());
-              firebaseController.create(_nameController.text,
-                  _emailController.text, _mobileController.text);
+              firebaseController.create(
+                  _nameController.text, _emailController.text, mobile);
               _nameController.text =
                   _mobileController.text = _emailController.text = "";
 

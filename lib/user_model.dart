@@ -40,7 +40,7 @@ class Data {
   });
 
   UserDetails userDetails;
-  String token;
+  String? token;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         userDetails: UserDetails.fromJson(json["user_details"]),
