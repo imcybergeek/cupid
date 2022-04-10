@@ -72,20 +72,20 @@ class FirebaseController extends GetxController {
 
   Future<void> getProfileData() async {
     try {
-      QuerySnapshot _taskSnap =
-          await FirebaseFirestore.instance.collection('UserData').get();
+      DocumentSnapshot profileData = await FirebaseFirestore.instance
+          .collection('UserData')
+          .doc(uid)
+          .get();
 
       profile.clear();
-      for (var item in _taskSnap.docs) {
-        profile.add(
-          ProfileModel(
-            item['name'],
-            item['mobile'],
-            item['gender'],
-            item['dob'],
-          ),
-        );
-      }
+      profile.add(
+        ProfileModel(
+          profileData['name'],
+          profileData['mobile'],
+          profileData['gender'],
+          profileData['dob'],
+        ),
+      );
       profile = profile.toList();
       isLoading = false;
       update();
