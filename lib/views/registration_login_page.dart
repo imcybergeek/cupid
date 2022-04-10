@@ -24,7 +24,7 @@ class SignUpLogin extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Image.asset('assets/couple.jpg'),
+                      Image.asset('assets/couple.jpg'),
                       Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
