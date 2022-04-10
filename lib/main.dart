@@ -1,6 +1,5 @@
 import 'package:cupid/auth_controller.dart';
 import 'package:cupid/shared_preferences.dart';
-import 'package:cupid/signup_login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

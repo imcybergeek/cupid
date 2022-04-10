@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cupid/home_contact_form.dart';
 import 'package:cupid/home_contacts_list.dart';
 import 'package:cupid/home_profile.dart';
@@ -22,14 +20,22 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: screens[_currentIndex],
-        ),
-      ),
+      body: GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+          },
+          child: Container(
+            color: Colors.white,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: screens[_currentIndex],
+            ),
+          )),
       bottomNavigationBar: BottomNavigationBar(
           iconSize: 35,
           showUnselectedLabels: false,

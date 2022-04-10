@@ -1,4 +1,5 @@
 import 'package:cupid/auth_controller.dart';
+import 'package:cupid/firebase_controller.dart';
 import 'package:flutter/material.dart';
 
 class Password extends StatelessWidget {
@@ -47,12 +48,9 @@ class Password extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    if (_passwordController.text ==
-                        _confirmPasswordController.text) {
-                      AuthController.instance
-                          .savePassword(_passwordController.text);
-                      AuthController.instance.register();
-                    }
+                    AuthController.instance.fromPasswordPageToHomePage(
+                        _passwordController.text,
+                        _confirmPasswordController.text);
                   },
                   child: Text(
                     "Complete",

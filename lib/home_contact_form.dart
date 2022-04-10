@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cupid/auth_controller.dart';
 import 'package:cupid/firebase_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +9,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 PhoneNumber number = PhoneNumber(isoCode: 'IN');
 var _nameController = TextEditingController();
 var _emailController = TextEditingController();
-String mobile = "";
+var _mobileController = TextEditingController();
 
 class ContactForm extends StatelessWidget {
   const ContactForm({
@@ -40,11 +43,10 @@ class ContactForm extends StatelessWidget {
           height: 25,
         ),
         InternationalPhoneNumberInput(
+            textFieldController: _mobileController,
             initialValue: number,
             inputBorder: OutlineInputBorder(),
-            onInputChanged: (phone) {
-              mobile = phone.toString();
-            }),
+            onInputChanged: (phone) {}),
         SizedBox(
           height: 25,
         ),
@@ -66,8 +68,16 @@ class ContactForm extends StatelessWidget {
             onPressed: () {
               final FirebaseController firebaseController =
                   Get.put(FirebaseController());
-              firebaseController.create(
-                  _nameController.text, _emailController.text, mobile);
+              firebaseController.create(_nameController.text,
+                  _emailController.text, _mobileController.text);
+              _nameController.text =
+                  _mobileController.text = _emailController.text = "";
+
+              FocusScopeNode currentFocus = FocusScope.of(context);
+
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
             },
             child: Text(
               "Submit",

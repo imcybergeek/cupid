@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'registration_name.dart';
 import 'login_page.dart';
-import 'package:http/http.dart' as http;
 
 class SignUpLogin extends StatelessWidget {
   const SignUpLogin({

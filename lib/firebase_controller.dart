@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupid/auth_controller.dart';
 import 'package:cupid/model.dart';
 import 'package:cupid/shared_preferences.dart';
 import 'package:get/get.dart';
@@ -96,11 +97,10 @@ class FirebaseController extends GetxController {
 
   create(String _name, String _email, String _mobile) {
     final FirebaseController firebaseController = Get.find();
-    firebaseController.addTransaction(
-        DateTime.now().millisecondsSinceEpoch.toString(),
-        _name,
-        _email,
-        _mobile);
+    firebaseController
+        .addTransaction(DateTime.now().millisecondsSinceEpoch.toString(), _name,
+            _email, _mobile)
+        .then((value) => AuthController.instance.contactAdded());
   }
 
   edit() {
@@ -120,9 +120,5 @@ class FirebaseController extends GetxController {
 
   setUid(String _uid) {
     uid = _uid;
-  }
-
-  display() {
-    print(uid);
   }
 }

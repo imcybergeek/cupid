@@ -1,5 +1,6 @@
 import 'package:cupid/auth_controller.dart';
 import 'package:cupid/registration_gender_dob.dart';
+import 'package:cupid/users/models/users_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,12 +50,8 @@ class Name extends StatelessWidget {
               ),
               ElevatedButton(
                   onPressed: () {
-                    if (_firstNameController.text.isNotEmpty &&
-                        _lastNameController.text.isNotEmpty) {
-                      AuthController.instance.saveName(
-                          _firstNameController.text, _lastNameController.text);
-                      Get.to(() => GenderDob());
-                    }
+                    AuthController.instance.fromNamePageToGenderAndDobPage(
+                        _firstNameController.text, _lastNameController.text);
                   },
                   child: Text(
                     "Next",

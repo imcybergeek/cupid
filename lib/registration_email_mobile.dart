@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
-class EmailMobile extends StatelessWidget {
-  const EmailMobile({Key? key}) : super(key: key);
+class EmailAndMobile extends StatelessWidget {
+  const EmailAndMobile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +48,8 @@ class EmailMobile extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () {
                       AuthController.instance
-                          .saveEmailMobile(_emailController.text, mobile);
-
-                      Get.to(() => Password());
+                          .fromEmailAndMobilePageToPasswordPage(
+                              _emailController.text, mobile);
                     },
                     child: Text(
                       "Next",

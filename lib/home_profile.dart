@@ -1,7 +1,6 @@
 import 'package:cupid/auth_controller.dart';
 import 'package:cupid/firebase_controller.dart';
 import 'package:cupid/home.dart';
-import 'package:cupid/home_contacts_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

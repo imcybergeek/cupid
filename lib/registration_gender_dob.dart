@@ -5,18 +5,17 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-bool male = false;
-bool female = false;
+bool gender = true;
 String dateTime = "1990-01-01";
 
-class GenderDob extends StatefulWidget {
-  const GenderDob({Key? key}) : super(key: key);
+class GenderAndDob extends StatefulWidget {
+  const GenderAndDob({Key? key}) : super(key: key);
 
   @override
-  State<GenderDob> createState() => _GenderDobState();
+  State<GenderAndDob> createState() => _GenderAndDobState();
 }
 
-class _GenderDobState extends State<GenderDob> {
+class _GenderAndDobState extends State<GenderAndDob> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,16 +40,15 @@ class _GenderDobState extends State<GenderDob> {
                     MaterialButton(
                       onPressed: () {
                         setState(() {
-                          male = !male;
-                          female = false;
+                          gender = true;
                         });
                       },
                       child: Text(
                         "MALE",
                         style: TextStyle(
-                            color: male ? Colors.white : Colors.black),
+                            color: gender ? Colors.white : Colors.black),
                       ),
-                      color: male ? Colors.blueGrey : Colors.white,
+                      color: gender ? Colors.blueGrey : Colors.white,
                     ),
                     SizedBox(
                       width: 50,
@@ -58,16 +56,15 @@ class _GenderDobState extends State<GenderDob> {
                     MaterialButton(
                       onPressed: () {
                         setState(() {
-                          female = !female;
-                          male = false;
+                          gender = false;
                         });
                       },
                       child: Text(
                         "FEMALE",
                         style: TextStyle(
-                            color: female ? Colors.white : Colors.black),
+                            color: gender ? Colors.black : Colors.white),
                       ),
-                      color: female ? Colors.blueGrey : Colors.white,
+                      color: gender ? Colors.white : Colors.blueGrey,
                     ),
                   ],
                 ),
@@ -97,10 +94,9 @@ class _GenderDobState extends State<GenderDob> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      String gender = male ? "male" : "female";
-                      AuthController.instance.saveGenderDob(gender, dateTime);
-
-                      Get.to(() => EmailMobile());
+                      AuthController.instance
+                          .fromGenderAndDobPageToEmailAndMobilePage(
+                              gender, dateTime);
                     },
                     child: Text(
                       "Next",
