@@ -16,7 +16,7 @@ class FirebaseController extends GetxController {
     if (name.isEmpty) {
       Get.snackbar("Name Missing!", "Enter the name!");
     } else if (AuthController.instance.validateMobile(mobile) &&
-        AuthController.instance.validateEmail(email)) {
+        AuthController.instance.validateEmail(userData![1])) {
       await addContact(DateTime.now().millisecondsSinceEpoch.toString(), name,
               email, mobile!)
           .then((value) => Get.snackbar(
