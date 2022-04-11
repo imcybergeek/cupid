@@ -30,6 +30,7 @@ String? mobileCupidknot;
 String? tokenCupidknot;
 
 class AuthController extends GetxController {
+  List<String>? userData = UserPreferences.getUserData();
   static AuthController instance = Get.find();
   late Rx<User?> _user;
 
@@ -59,7 +60,7 @@ class AuthController extends GetxController {
           .then((value) {
         FirebaseFirestore.instance
             .collection('UserData')
-            .doc(value.user!.uid)
+            .doc(userData![5])
             .set({
           "name": name,
           "mobile": mobile,
