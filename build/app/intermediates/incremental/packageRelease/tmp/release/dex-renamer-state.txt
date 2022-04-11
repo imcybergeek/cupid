@@ -1,0 +1,4 @@
+#Mon Apr 11 10:29:59 IST 2022
+base.0=D\:\\cupid\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">75644322425-3tj39hln2sgua3i3cjbea7jn4eoh24oi.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">75644322425</string>
+    <string name="google_api_key" translatable="false">AIzaSyAYl3nD49wI849-h-x2dpb8Tv-ixZYsoF8</string>
+    <string name="google_app_id" translatable="false">1:75644322425:android:ca66aca8514fddb0d0caa8</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAYl3nD49wI849-h-x2dpb8Tv-ixZYsoF8</string>
+    <string name="google_storage_bucket" translatable="false">cupidknot-3ccca.appspot.com</string>
+    <string name="project_id" translatable="false">cupidknot-3ccca</string>
+</resources>
