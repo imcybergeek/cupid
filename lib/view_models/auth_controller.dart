@@ -58,10 +58,7 @@ class AuthController extends GetxController {
           .createUserWithEmailAndPassword(
               email: email!.trim(), password: password!.trim())
           .then((value) {
-        FirebaseFirestore.instance
-            .collection('UserData')
-            .doc(userData![5])
-            .set({
+        FirebaseFirestore.instance.collection('UserData').doc(email).set({
           "name": name,
           "mobile": mobile,
           "gender": gender,
@@ -72,7 +69,7 @@ class AuthController extends GetxController {
       });
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Account Creation Failed", e.message.toString(),
-          snackPosition: SnackPosition.BOTTOM);
+          snackPosition: SnackPosition.TOP);
     }
   }
 
@@ -87,7 +84,7 @@ class AuthController extends GetxController {
       });
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Login Failed", e.message.toString(),
-          snackPosition: SnackPosition.BOTTOM);
+          snackPosition: SnackPosition.TOP);
     }
   }
 
@@ -142,7 +139,7 @@ class AuthController extends GetxController {
       return false;
     } else {
       UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
-      UserPreferences.setUserData([
+      await UserPreferences.setUserData([
         userModel.data.userDetails.name,
         userModel.data.userDetails.email,
         userModel.data.userDetails.mobileNo,
@@ -172,7 +169,7 @@ class AuthController extends GetxController {
       return false;
     } else {
       UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
-      UserPreferences.setUserData([
+      await UserPreferences.setUserData([
         userModel.data.userDetails.name,
         userModel.data.userDetails.email,
         userModel.data.userDetails.mobileNo,
@@ -208,7 +205,7 @@ class AuthController extends GetxController {
       return false;
     } else {
       UserModel userModel = UserModel.fromJson(jsonDecode(res.body));
-      UserPreferences.setUserData([
+      await UserPreferences.setUserData([
         userModel.data.userDetails.name,
         userModel.data.userDetails.email,
         userModel.data.userDetails.mobileNo,

@@ -112,10 +112,7 @@ class FirebaseController extends GetxController {
 
   Future<void> updateProfile(
       String name, String mobile, String gender, String dob) async {
-    await FirebaseFirestore.instance
-        .collection('UserData')
-        .doc(userData![1])
-        .set(
+    await FirebaseFirestore.instance.collection('UserData').doc(email).set(
       {
         'name': name,
         'mobile': mobile,
