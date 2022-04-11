@@ -10,6 +10,7 @@ class FirebaseController extends GetxController {
   var contacts = <ContactsModel>[];
   var profile = <ProfileModel>[];
   String? uid = UserPreferences.getUid();
+  List<String>? userData = UserPreferences.getUserData();
   String? _email;
 
   createContact(String name, String email, String? mobile) async {
@@ -31,7 +32,7 @@ class FirebaseController extends GetxController {
       String id, String name, String email, String mobile) async {
     await FirebaseFirestore.instance
         .collection('UserData')
-        .doc(_email)
+        .doc(_email ?? userData![1])
         .collection('contacts')
         .doc(id.isNotEmpty ? id : '')
         .set(
@@ -50,7 +51,7 @@ class FirebaseController extends GetxController {
     try {
       QuerySnapshot _taskSnap = await FirebaseFirestore.instance
           .collection('UserData')
-          .doc(_email)
+          .doc(_email ?? userData![1])
           .collection('contacts')
           .get();
 
@@ -76,7 +77,7 @@ class FirebaseController extends GetxController {
   deleteContact(String id) {
     FirebaseFirestore.instance
         .collection('UserData')
-        .doc(_email)
+        .doc(_email ?? userData![1])
         .collection('contacts')
         .doc(id)
         .delete();
@@ -90,7 +91,7 @@ class FirebaseController extends GetxController {
     try {
       DocumentSnapshot profileData = await FirebaseFirestore.instance
           .collection('UserData')
-          .doc(_email)
+          .doc(_email ?? userData![1])
           .get();
 
       profile.clear();
@@ -112,7 +113,10 @@ class FirebaseController extends GetxController {
 
   Future<void> updateProfile(
       String name, String mobile, String gender, String dob) async {
-    await FirebaseFirestore.instance.collection('UserData').doc(_email).set(
+    await FirebaseFirestore.instance
+        .collection('UserData')
+        .doc(_email ?? userData![1])
+        .set(
       {
         'name': name,
         'mobile': mobile,
