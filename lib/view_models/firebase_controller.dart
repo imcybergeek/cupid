@@ -10,13 +10,13 @@ class FirebaseController extends GetxController {
   var contacts = <ContactsModel>[];
   var profile = <ProfileModel>[];
   String? uid = UserPreferences.getUid();
-  List<String>? userData = UserPreferences.getUserData();
+  String? _email;
 
   createContact(String name, String email, String? mobile) async {
     if (name.isEmpty) {
       Get.snackbar("Name Missing!", "Enter the name!");
     } else if (AuthController.instance.validateMobile(mobile) &&
-        AuthController.instance.validateEmail(userData![1])) {
+        AuthController.instance.validateEmail(email)) {
       await addContact(DateTime.now().millisecondsSinceEpoch.toString(), name,
               email, mobile!)
           .then((value) => Get.snackbar(
@@ -31,7 +31,7 @@ class FirebaseController extends GetxController {
       String id, String name, String email, String mobile) async {
     await FirebaseFirestore.instance
         .collection('UserData')
-        .doc(userData![1])
+        .doc(_email)
         .collection('contacts')
         .doc(id.isNotEmpty ? id : '')
         .set(
@@ -50,7 +50,7 @@ class FirebaseController extends GetxController {
     try {
       QuerySnapshot _taskSnap = await FirebaseFirestore.instance
           .collection('UserData')
-          .doc(userData![1])
+          .doc(_email)
           .collection('contacts')
           .get();
 
@@ -76,7 +76,7 @@ class FirebaseController extends GetxController {
   deleteContact(String id) {
     FirebaseFirestore.instance
         .collection('UserData')
-        .doc(userData![1])
+        .doc(_email)
         .collection('contacts')
         .doc(id)
         .delete();
@@ -90,7 +90,7 @@ class FirebaseController extends GetxController {
     try {
       DocumentSnapshot profileData = await FirebaseFirestore.instance
           .collection('UserData')
-          .doc(userData![1])
+          .doc(_email)
           .get();
 
       profile.clear();
@@ -112,7 +112,7 @@ class FirebaseController extends GetxController {
 
   Future<void> updateProfile(
       String name, String mobile, String gender, String dob) async {
-    await FirebaseFirestore.instance.collection('UserData').doc(email).set(
+    await FirebaseFirestore.instance.collection('UserData').doc(_email).set(
       {
         'name': name,
         'mobile': mobile,
@@ -123,5 +123,11 @@ class FirebaseController extends GetxController {
     ).then(
       (value) => Get.back(),
     );
+  }
+
+  setEmail() {
+    List<String>? userData = UserPreferences.getUserData();
+    _email = userData![1];
+    print(_email);
   }
 }

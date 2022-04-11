@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid/models/error_model.dart';
+import 'package:cupid/view_models/firebase_controller.dart';
 import 'package:cupid/views/home/home.dart';
 import 'package:cupid/views/home/home_contacts_list.dart';
 import 'package:cupid/models/user_model.dart';
@@ -147,6 +148,7 @@ class AuthController extends GetxController {
         DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
         userModel.data.token!
       ]);
+      FirebaseController.instance.setEmail();
       return true;
     }
   }
@@ -177,6 +179,7 @@ class AuthController extends GetxController {
         DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
         userModel.data.token!
       ]);
+      FirebaseController.instance.setEmail();
       return true;
     }
   }
@@ -213,6 +216,7 @@ class AuthController extends GetxController {
         DateFormat('yyyy-MM-dd').format(userModel.data.userDetails.dob),
         token
       ]);
+      FirebaseController.instance.setEmail();
       return true;
     }
   }

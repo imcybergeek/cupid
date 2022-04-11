@@ -30,105 +30,103 @@ class _ProfileState extends State<Profile> {
         initState: (_) {},
         builder: (firebaseController) {
           firebaseController.getProfileData();
-          return firebaseController.profile.isEmpty
-              ? Center(child: CircularProgressIndicator())
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Text(
-                      "Profile",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    edit
-                        ? Column(
-                            children: [
-                              CustomFormField(
-                                controller: _nameController,
-                                label: "Full Name",
-                              ),
-                              CustomFormField(
-                                controller: _mobileController,
-                                label: "Mobile Number",
-                              ),
-                              CustomFormField(
-                                controller: _genderController,
-                                label: "Gender",
-                              ),
-                              CustomFormField(
-                                controller: _dobController,
-                                label: "DOB",
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              ProfileCard(
-                                type: "Name:",
-                                value: userData![0],
-                              ),
-                              ProfileCard(
-                                type: "Mobile:",
-                                value: userData[2],
-                              ),
-                              ProfileCard(
-                                type: "Gender:",
-                                value: userData[3],
-                              ),
-                              ProfileCard(
-                                type: "Date of Birth:",
-                                value: userData[4],
-                              ),
-                            ],
-                          ),
-                    SizedBox(
-                      height: 25,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              Text(
+                "Profile",
+                style: TextStyle(fontSize: 25),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              edit
+                  ? Column(
                       children: [
-                        BlueButton(
-                          text: "Logout",
-                          onTap: () {
-                            AuthController.instance.signOut();
-                          },
+                        CustomFormField(
+                          controller: _nameController,
+                          label: "Full Name",
                         ),
-                        SizedBox(
-                          width: 25,
+                        CustomFormField(
+                          controller: _mobileController,
+                          label: "Mobile Number",
                         ),
-                        BlueButton(
-                          text: edit ? "Save" : "Edit",
-                          onTap: () async {
-                            if (edit) {
-                              await AuthController.instance.updateUserData(
-                                  _nameController.text,
-                                  _mobileController.text,
-                                  _genderController.text,
-                                  _dobController.text,
-                                  userData![5]);
-                              setState(() {});
-                            } else {
-                              _nameController.text = userData![0];
-                              _mobileController.text = userData[2];
-                              _genderController.text = userData[3];
-                              _dobController.text = userData[4];
-                            }
-                            edit = !edit;
-                          },
+                        CustomFormField(
+                          controller: _genderController,
+                          label: "Gender",
+                        ),
+                        CustomFormField(
+                          controller: _dobController,
+                          label: "DOB",
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        ProfileCard(
+                          type: "Name:",
+                          value: userData![0],
+                        ),
+                        ProfileCard(
+                          type: "Mobile:",
+                          value: userData[2],
+                        ),
+                        ProfileCard(
+                          type: "Gender:",
+                          value: userData[3],
+                        ),
+                        ProfileCard(
+                          type: "Date of Birth:",
+                          value: userData[4],
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: 50,
-                    ),
-                    SizedBox(height: 25),
-                  ],
-                );
+              SizedBox(
+                height: 25,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  BlueButton(
+                    text: "Logout",
+                    onTap: () {
+                      AuthController.instance.signOut();
+                    },
+                  ),
+                  SizedBox(
+                    width: 25,
+                  ),
+                  BlueButton(
+                    text: edit ? "Save" : "Edit",
+                    onTap: () async {
+                      if (edit) {
+                        await AuthController.instance.updateUserData(
+                            _nameController.text,
+                            _mobileController.text,
+                            _genderController.text,
+                            _dobController.text,
+                            userData![5]);
+                        setState(() {});
+                      } else {
+                        _nameController.text = userData![0];
+                        _mobileController.text = userData[2];
+                        _genderController.text = userData[3];
+                        _dobController.text = userData[4];
+                      }
+                      edit = !edit;
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              SizedBox(height: 25),
+            ],
+          );
         });
   }
 }
